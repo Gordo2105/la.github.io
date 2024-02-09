@@ -1,0 +1,29 @@
+name: Cleanup Repository
+
+on:
+  schedule:
+    - cron: '*/1 * * * *'  # Run every minute
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      with:
+        repository: Gordo2105/sitentfy
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Delete non-HTML files
+      run: |
+        find . -type f ! -name "*.html" -delete
+
+    - name: Commit and push changes
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add .
+        git commit -m "Cleanup repository"
+        git push
+        
