@@ -11,19 +11,17 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
-      with:
-        repository: Gordo2105/sitentfy
-        token: ${{ secrets.GITHUB_TOKEN }}
-
+      
+    - name: Clone other repository
+      run: git clone https://github.com/Gordo2105/sitentfy.git
+      
     - name: Delete non-HTML files
       run: |
-        find . -type f ! -name "*.html" -delete
-
-    - name: Commit and push changes
-      run: |
+        find other-repo -type f ! -name "*.html" -delete
+        cd other-repo
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git add .
-        git commit -m "Cleanup repository"
-        git push
+        git commit -m "Delete non-HTML files"
+        git push origin HEAD:main
         
